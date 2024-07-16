@@ -3,6 +3,10 @@
 import React, { useEffect, useState } from "react";
 import "leaflet/dist/leaflet.css";
 import dynamic from "next/dynamic";
+import { Marker, Popup, ZoomControl } from "react-leaflet";
+import Navbar from "./Navbar";
+import MarkerLayer from "./MarkerLayer";
+import { Session } from "next-auth";
 
 const MapContainer = dynamic(
     () => import("react-leaflet").then((mod) => mod.MapContainer),
@@ -14,14 +18,16 @@ const TileLayer = dynamic(
     { ssr: false },
 );
 
-interface MapProps {}
+interface MapProps {
+    session?: Session | null
+}
 
-const Map: React.FC<MapProps> = ({}) => {
+const Map: React.FC<MapProps> = ({session}) => {
     const [latLong, setlatLong] = useState<[lat: number, long: number]>([
         40.7, -74,
     ]);
 
-    const [zoom, setZoom] = useState<number>(13)
+    const [zoom, setZoom] = useState<number>(13);
 
     const setLatLongHelper = (pos: GeolocationPosition) => {
         console.log(pos);
@@ -42,8 +48,11 @@ const Map: React.FC<MapProps> = ({}) => {
             zoom={zoom}
             style={{ height: "100vh", width: "100vw" }}
             zoomControl={false}
+            whenReady={() => {}}
         >
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+            <MarkerLayer session={session} />
+            <ZoomControl position="bottomright" />
         </MapContainer>
     );
 };

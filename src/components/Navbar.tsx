@@ -1,8 +1,7 @@
 import React from "react";
 import ThemeDropdown from "./ThemeDropdown";
-import UserDropdown from "./UserDropdown";
 import UserLogin from "./UserLogin";
-import { Separator } from "./ui/separator";
+import { Separator } from "./ui/Separator";
 
 interface NavbarProps {}
 

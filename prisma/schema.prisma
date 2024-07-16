@@ -47,6 +47,8 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+
+    markers Marker[]
 }
 
 model VerificationToken {
@@ -55,4 +57,30 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model Marker {
+    id String @id @default(cuid())
+
+    creator   User   @relation(fields: [creatorId], references: [id])
+    creatorId String
+
+    lat Float
+    lng Float
+
+    type markerType
+
+    title       String @db.VarChar(50)
+    description String @db.VarChar(250)
+
+    created     DateTime @default(now())
+    lastUpdated DateTime @updatedAt
+}
+
+enum markerType {
+    Single_Caution
+    Double_Caution
+    Triple_Caution
+    Charge_Spot
+    Meetup_Spot
 }

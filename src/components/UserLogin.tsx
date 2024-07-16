@@ -6,15 +6,9 @@ import LogInButton from "./LogInButton";
 interface UserLoginProps {}
 
 const UserLogin: React.FC<UserLoginProps> = async ({}) => {
-    const session = await getServerAuthSession()
+    const session = await getServerAuthSession();
 
-    return (
-        session?.user ? (
-            <UserDropdown session={session} />
-        ) : (
-            <LogInButton />
-        )
-    )
+    return session?.user ? <UserDropdown session={session} /> : <LogInButton />;
 };
 
 export default UserLogin;

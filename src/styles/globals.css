@@ -55,5 +55,21 @@
     }
     body {
         @apply bg-background text-foreground;
-    }
+    }   
+}
+
+.leaflet-popup-tip, .leaflet-popup-content-wrapper {
+    @apply !bg-background !text-foreground
+}
+
+.leaflet-popup-close-button span {
+    @apply !text-foreground
+}
+
+.leaflet-control-zoom-in, .leaflet-control-zoom-out {
+    @apply !bg-background !text-foreground !border-none !rounded-lg
+}
+
+.leaflet-control {
+    @apply !bg-background !text-foreground !border-none
 }

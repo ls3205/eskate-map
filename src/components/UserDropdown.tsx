@@ -7,7 +7,7 @@ import {
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from "./ui/DropdownMenu";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/Avatar";
 import { User, UserIcon } from "lucide-react";
 import { Button } from "./ui/Button";
 import { signOut } from "next-auth/react";
