@@ -19,7 +19,7 @@ export const AddMarker = async (data: z.infer<typeof formSchema>, creatorId: str
     return dbMarker
 }
 
-export const GetMarkers = async (neBound: { lat: number, lng: number }, swBound: { lat: number, lng: number }) => {
+export const GetDBMarkers = async (neBound: { lat: number, lng: number }, swBound: { lat: number, lng: number }) => {
     console.log('get start');
 
     const dbMarkers = await db.marker.findMany(({

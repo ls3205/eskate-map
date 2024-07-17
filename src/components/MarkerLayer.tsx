@@ -5,35 +5,32 @@ import { useMap, useMapEvents, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import { Session } from "next-auth";
 import AddMarkerForm from "./AddMarkerForm";
-import { useMutation } from "@tanstack/react-query";
-import { GetMarkers } from "@skatemap/app/actions";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { GetDBMarkers } from "@skatemap/app/actions";
 import { Marker as MarkerType } from "@prisma/client";
+import axios from "axios";
+import CustomMarker from "./CustomMarker";
+import { defaultIcon } from "@skatemap/icons/icons";
 
 interface MarkerLayerProps {
     session?: Session | null;
 }
 
 const MarkerLayer: React.FC<MarkerLayerProps> = ({ session }) => {
-    const { mutate: GetMarkersInView } = useMutation({
-        mutationKey: [
-            `GetMarkers`,
-        ],
-        mutationFn: async (bounds: L.LatLngBounds) => {
-            console.log("func");
+    var moveTimer: ReturnType<typeof setTimeout>;
 
-            const data = await GetMarkers(
-                bounds.getNorthEast(),
-                bounds.getSouthWest(),
+    const { mutate: GetMarkersInView } = useMutation({
+        mutationKey: [`GetMarkers`],
+        mutationFn: async (bounds: L.LatLngBounds) => {
+            const { data } = await axios.get(
+                `/api/markers?neLat=${bounds.getNorthEast().lat}&neLng=${bounds.getNorthEast().lng}&swLat=${bounds.getSouthWest().lat}&swLng=${bounds.getSouthWest().lng}`,
             );
 
-            console.log("func complete");
-
-            return data;
+            return data as MarkerType[];
         },
         onError: (err) => {},
         onSuccess: (data) => {
             var tempArr = markerArray;
-            console.log(data);
             data.forEach((marker) => {
                 if (!markerArray.includes(marker)) {
                     tempArr.push(marker);
@@ -64,10 +61,19 @@ const MarkerLayer: React.FC<MarkerLayerProps> = ({ session }) => {
             }
         },
         moveend: (e) => {
-            console.log("bruh");
-            GetMarkersInView(map.getBounds());
+            if (moveTimer) {
+                clearTimeout(moveTimer);
+            }
+
+            moveTimer = setTimeout(() => {
+                GetMarkersInView(map.getBounds());
+            }, 1000);
         },
     });
+
+    useEffect(() => {
+        GetMarkersInView(map.getBounds());
+    }, []);
 
     const [tempMarkerLatLong, setTempMarkerLatLong] = useState<
         [lat: number, lng: number] | null
@@ -76,13 +82,6 @@ const MarkerLayer: React.FC<MarkerLayerProps> = ({ session }) => {
     const tempMarkerRef = useRef(null);
 
     const [markerArray, setMarkerArray] = useState<MarkerType[]>([]);
-
-    const icon = L.icon({
-        iconUrl: "/images/marker-icon.png",
-        shadowUrl: "/images/marker-shadow.png",
-        popupAnchor: [0.5, -32.5],
-        iconAnchor: [12.5, 35],
-    });
 
     const clearTemp = () => {
         setTempMarkerLatLong(null);
@@ -95,7 +94,7 @@ const MarkerLayer: React.FC<MarkerLayerProps> = ({ session }) => {
                     position={tempMarkerLatLong}
                     opacity={showTempMarker ? 100 : 0}
                     ref={tempMarkerRef}
-                    icon={icon}
+                    icon={defaultIcon}
                     interactive={showTempMarker}
                 >
                     <Popup>
@@ -110,12 +109,7 @@ const MarkerLayer: React.FC<MarkerLayerProps> = ({ session }) => {
                 ""
             )}
             {markerArray.map((marker) => {
-                return (
-                    <Marker
-                        position={[marker.lat, marker.lng]}
-                        icon={icon}
-                    ></Marker>
-                );
+                return <CustomMarker marker={marker} session={session} />;
             })}
         </>
     );
