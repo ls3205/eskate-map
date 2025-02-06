@@ -134,7 +134,7 @@ const AddMarkerForm: React.FC<AddMarkerFormProps> = ({
                                         <SelectValue placeholder="Select a type of marker" />
                                     </SelectTrigger>
                                 </FormControl>
-                                <SelectContent className="z-[610]">
+                                <SelectContent className="z-610">
                                     <SelectItem value="Single_Caution">
                                         Single Caution
                                     </SelectItem>
