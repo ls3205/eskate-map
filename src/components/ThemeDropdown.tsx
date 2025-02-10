@@ -10,13 +10,14 @@ import {
 } from "@skatemap/components/ui/DropdownMenu";
 import { SunMoonIcon } from "lucide-react";
 import { cn } from "@skatemap/lib/utils";
+import { buttonVariants } from "./ui/Button";
 
 interface ThemeDropdownProps {
-    className?: string
+    className?: string;
 }
 
-const ThemeDropdown: React.FC<ThemeDropdownProps> = ({className}) => {
-    const [theme, setTheme] = useState("system");
+const ThemeDropdown: React.FC<ThemeDropdownProps> = ({ className }) => {
+    const [theme, setTheme] = useState("system"); //TODO: fix this from always resetting (zustand??)
 
     useEffect(() => {
         if (
@@ -51,7 +52,13 @@ const ThemeDropdown: React.FC<ThemeDropdownProps> = ({className}) => {
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className={cn('', className)}>
+            <DropdownMenuTrigger
+                className={cn(
+                    buttonVariants({ variant: "ghost" }),
+                    "px-2",
+                    className,
+                )}
+            >
                 <SunMoonIcon />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="relative mt-3 mr-2">

@@ -7,7 +7,7 @@ interface NavbarProps {}
 
 const Navbar: React.FC<NavbarProps> = ({}) => {
     return (
-        <div className="absolute right-5 top-5 flex flex-row space-x-2 rounded-full bg-background p-3">
+        <div className="bg-background absolute top-5 right-5 flex flex-row space-x-2 rounded-md p-2">
             <UserLogin />
             <Separator orientation="vertical" className="h-auto" />
             <ThemeDropdown />

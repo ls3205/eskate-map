@@ -7,6 +7,7 @@ import { Marker, Popup, ZoomControl } from "react-leaflet";
 import Navbar from "./Navbar";
 import MarkerLayer from "./MarkerLayer";
 import { Session } from "next-auth";
+import CustomZoom from "./CustomZoom";
 
 const MapContainer = dynamic(
     () => import("react-leaflet").then((mod) => mod.MapContainer),
@@ -53,6 +54,7 @@ const Map: React.FC<MapProps> = ({ session }) => {
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             <MarkerLayer session={session} />
             <ZoomControl position="bottomright" />
+            <CustomZoom />
         </MapContainer>
     );
 };
