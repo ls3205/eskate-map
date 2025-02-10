@@ -11,6 +11,7 @@ import { Marker as MarkerType } from "@prisma/client";
 import axios from "axios";
 import CustomMarker from "./CustomMarker";
 import { defaultIcon } from "@skatemap/icons/icons";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 interface MarkerLayerProps {
     session?: Session | null;
@@ -54,10 +55,13 @@ const MarkerLayer: React.FC<MarkerLayerProps> = ({ session }) => {
         contextmenu: (e) => {
             if (session?.user) {
                 setTempMarkerLatLong([e.latlng.lat, e.latlng.lng]);
+                setTempPopoverPos(e.layerPoint);
                 setShowTempMarker(true);
                 const marker = tempMarkerRef.current;
                 // @ts-expect-error: i'm probably doing something stupid in the next line
                 marker ? marker.openPopup() : null;
+
+                map.panTo(e.latlng);
             } else {
                 map.panTo(e.latlng);
             }
@@ -83,6 +87,8 @@ const MarkerLayer: React.FC<MarkerLayerProps> = ({ session }) => {
     const [showTempMarker, setShowTempMarker] = useState<boolean>(false);
     const tempMarkerRef = useRef(null);
 
+    const [tempPopoverPos, setTempPopoverPos] = useState<L.Point | null>(null);
+
     const [markerArray, setMarkerArray] = useState<MarkerType[]>([]);
 
     const clearTemp = () => {
@@ -99,7 +105,7 @@ const MarkerLayer: React.FC<MarkerLayerProps> = ({ session }) => {
                     icon={defaultIcon}
                     interactive={showTempMarker}
                 >
-                    <Popup>
+                    <Popup closeOnEscapeKey>
                         <AddMarkerForm
                             latLng={tempMarkerLatLong}
                             session={session}
