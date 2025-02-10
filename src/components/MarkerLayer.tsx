@@ -17,20 +17,22 @@ interface MarkerLayerProps {
 }
 
 const MarkerLayer: React.FC<MarkerLayerProps> = ({ session }) => {
-    var moveTimer: ReturnType<typeof setTimeout>;
+    let moveTimer: ReturnType<typeof setTimeout>;
 
     const { mutate: GetMarkersInView } = useMutation({
         mutationKey: [`GetMarkers`],
         mutationFn: async (bounds: L.LatLngBounds) => {
-            const { data } = await axios.get(
+            const { data }: { data: MarkerType[] } = await axios.get(
                 `/api/markers?neLat=${bounds.getNorthEast().lat}&neLng=${bounds.getNorthEast().lng}&swLat=${bounds.getSouthWest().lat}&swLng=${bounds.getSouthWest().lng}`,
             );
 
-            return data as MarkerType[];
+            return data;
         },
-        onError: (err) => {},
+        onError: (err) => {
+            console.log(err);
+        },
         onSuccess: (data) => {
-            var tempArr = markerArray;
+            const tempArr = markerArray;
             data.forEach((marker) => {
                 if (!markerArray.includes(marker)) {
                     tempArr.push(marker);
@@ -54,7 +56,7 @@ const MarkerLayer: React.FC<MarkerLayerProps> = ({ session }) => {
                 setTempMarkerLatLong([e.latlng.lat, e.latlng.lng]);
                 setShowTempMarker(true);
                 const marker = tempMarkerRef.current;
-                // @ts-expect-error
+                // @ts-expect-error: i'm probably doing something stupid in the next line
                 marker ? marker.openPopup() : null;
             } else {
                 map.panTo(e.latlng);
@@ -108,8 +110,10 @@ const MarkerLayer: React.FC<MarkerLayerProps> = ({ session }) => {
             ) : (
                 ""
             )}
-            {markerArray.map((marker) => {
-                return <CustomMarker marker={marker} session={session} />;
+            {markerArray.map((marker, key) => {
+                return (
+                    <CustomMarker marker={marker} session={session} key={key} />
+                );
             })}
         </>
     );

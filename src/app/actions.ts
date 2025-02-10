@@ -1,8 +1,8 @@
 "use server"
 
 import { db } from "@skatemap/server/db"
-import { formSchema } from "@skatemap/components/AddMarkerForm"
-import { z } from "zod"
+import type { formSchema } from "@skatemap/components/AddMarkerForm"
+import type { z } from "zod"
 
 export const AddMarker = async (data: z.infer<typeof formSchema>, creatorId: string) => {
     const dbMarker = await db.marker.create({

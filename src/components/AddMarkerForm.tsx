@@ -22,7 +22,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "./ui/Select";
-import { Session } from "next-auth";
+import type { Session } from "next-auth";
 import { useMutation } from "@tanstack/react-query";
 import { AddMarker } from "@skatemap/app/actions";
 
@@ -74,7 +74,9 @@ const AddMarkerForm: React.FC<AddMarkerFormProps> = ({
             const data = await AddMarker(marker, session.user.id);
             return data;
         },
-        onError: (err) => {},
+        onError: (err) => {
+            console.log(err);
+        },
         onSuccess: (data) => {
             markerRef.closePopup();
         },
@@ -97,7 +99,7 @@ const AddMarkerForm: React.FC<AddMarkerFormProps> = ({
                                 <Input {...field} disabled />
                             </FormControl>
                             <FormDescription>
-                                The Marker's Latitude
+                                {"The Marker's Latitude"}
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -113,7 +115,7 @@ const AddMarkerForm: React.FC<AddMarkerFormProps> = ({
                                 <Input {...field} disabled />
                             </FormControl>
                             <FormDescription>
-                                The Marker's Longitude
+                                {"The Marker's Longitude"}
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -169,7 +171,7 @@ const AddMarkerForm: React.FC<AddMarkerFormProps> = ({
                                 <Input {...field} />
                             </FormControl>
                             <FormDescription>
-                                The Marker's Title
+                                {"The Marker's Title"}
                             </FormDescription>
                             <FormMessage />
                         </FormItem>

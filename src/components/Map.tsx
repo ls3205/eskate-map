@@ -19,10 +19,10 @@ const TileLayer = dynamic(
 );
 
 interface MapProps {
-    session?: Session | null
+    session?: Session | null;
 }
 
-const Map: React.FC<MapProps> = ({session}) => {
+const Map: React.FC<MapProps> = ({ session }) => {
     const [latLong, setlatLong] = useState<[lat: number, long: number]>([
         40.7, -74,
     ]);
@@ -48,7 +48,7 @@ const Map: React.FC<MapProps> = ({session}) => {
             zoom={zoom}
             style={{ height: "100vh", width: "100vw" }}
             zoomControl={false}
-            whenReady={() => {}}
+            // whenReady={() => {}}
         >
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             <MarkerLayer session={session} />
