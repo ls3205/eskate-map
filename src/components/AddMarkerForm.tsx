@@ -49,13 +49,13 @@ export const formSchema = z.object({
 interface AddMarkerFormProps {
     latLng: [lat: number, lng: number];
     session: Session;
-    markerRef: any;
+    //markerRef: any;
 }
 
 const AddMarkerForm: React.FC<AddMarkerFormProps> = ({
     latLng,
     session,
-    markerRef,
+    //markerRef,
 }) => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -78,7 +78,7 @@ const AddMarkerForm: React.FC<AddMarkerFormProps> = ({
             console.log(err);
         },
         onSuccess: (data) => {
-            markerRef.closePopup();
+            //markerRef.closePopup();
         },
     });
 
