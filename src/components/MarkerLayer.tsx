@@ -12,6 +12,10 @@ import axios from "axios";
 import CustomMarker from "./CustomMarker";
 import { defaultIcon } from "@skatemap/icons/icons";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Button, buttonVariants } from "./ui/Button";
+import { PlusIcon } from "lucide-react";
+import { Separator } from "./ui/Separator";
+import Link from "next/link";
 
 interface MarkerLayerProps {
     session?: Session | null;
@@ -55,7 +59,6 @@ const MarkerLayer: React.FC<MarkerLayerProps> = ({ session }) => {
         contextmenu: (e) => {
             if (session?.user) {
                 setTempMarkerLatLong([e.latlng.lat, e.latlng.lng]);
-                setTempPopoverPos(e.layerPoint);
                 setShowTempMarker(true);
                 const marker = tempMarkerRef.current;
                 // @ts-expect-error: i'm probably doing something stupid in the next line
@@ -87,8 +90,6 @@ const MarkerLayer: React.FC<MarkerLayerProps> = ({ session }) => {
     const [showTempMarker, setShowTempMarker] = useState<boolean>(false);
     const tempMarkerRef = useRef(null);
 
-    const [tempPopoverPos, setTempPopoverPos] = useState<L.Point | null>(null);
-
     const [markerArray, setMarkerArray] = useState<MarkerType[]>([]);
 
     const clearTemp = () => {
@@ -105,12 +106,24 @@ const MarkerLayer: React.FC<MarkerLayerProps> = ({ session }) => {
                     icon={defaultIcon}
                     interactive={showTempMarker}
                 >
-                    <Popup closeOnEscapeKey>
-                        <AddMarkerForm
-                            latLng={tempMarkerLatLong}
-                            session={session}
-                            markerRef={tempMarkerRef.current}
-                        />
+                    <Popup closeOnEscapeKey closeButton={false}>
+                        {/* <AddMarkerForm */}
+                        {/*     latLng={tempMarkerLatLong} */}
+                        {/*     session={session} */}
+                        {/*     markerRef={tempMarkerRef.current} */}
+                        {/* /> */}
+
+                        <Link
+                            className={buttonVariants({ variant: "ghost" })}
+                            href={`/add-marker?lat=${tempMarkerLatLong[0]}&lng=${tempMarkerLatLong[1]}`}
+                        >
+                            <PlusIcon />
+                            <Separator
+                                className="mx-2"
+                                orientation={"vertical"}
+                            />
+                            <p>Create New Marker</p>
+                        </Link>
                     </Popup>
                 </Marker>
             ) : (

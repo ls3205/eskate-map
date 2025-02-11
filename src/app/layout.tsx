@@ -3,6 +3,7 @@ import "@skatemap/styles/globals.css";
 
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
+import { PropsWithChildren } from "react";
 
 export const metadata: Metadata = {
     title: "Create T3 App",
@@ -10,13 +11,24 @@ export const metadata: Metadata = {
     icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-export default function RootLayout({
-    children,
-}: Readonly<{ children: React.ReactNode }>) {
+export type RootLayoutProps = Readonly<
+    PropsWithChildren<{
+        modals: React.ReactNode;
+    }>
+>;
+
+export default function RootLayout({ children, modals }: RootLayoutProps) {
     return (
-        <html lang="en" className={`${GeistSans.variable}`} suppressHydrationWarning>
+        <html
+            lang="en"
+            className={`${GeistSans.variable}`}
+            suppressHydrationWarning
+        >
             <body>
-                <Providers>{children}</Providers>
+                <Providers>
+                    {children}
+                    {modals}
+                </Providers>
             </body>
         </html>
     );
