@@ -88,7 +88,10 @@ const AddMarkerForm: React.FC<AddMarkerFormProps> = ({
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="max-w-52 space-y-8 p-2"
+            >
                 <FormField
                     control={form.control}
                     name="lat"
@@ -193,7 +196,9 @@ const AddMarkerForm: React.FC<AddMarkerFormProps> = ({
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Submit Marker</Button>
+                <Button type="submit" className="cursor-pointer">
+                    Submit Marker
+                </Button>
             </form>
         </Form>
     );
