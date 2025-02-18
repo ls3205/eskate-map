@@ -77,7 +77,7 @@ const AddMarkerForm: React.FC<AddMarkerFormProps> = ({
         mutationKey: ["CreateMarker"],
         mutationFn: async (marker: z.infer<typeof formSchema>) => {
             setLoading(true);
-            const data = await AddMarker(marker, session.user.id);
+            const data = await AddMarker(marker);
             return data;
         },
         onError: (err) => {

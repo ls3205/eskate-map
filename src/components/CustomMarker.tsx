@@ -1,8 +1,9 @@
-import { Marker as MarkerType } from "@prisma/client";
+import type { Marker as MarkerType } from "@prisma/client";
 import { defaultIcon } from "@skatemap/icons/icons";
-import { Session } from "next-auth";
+import type { Session } from "next-auth";
 import React from "react";
 import { Marker } from "react-leaflet";
+import CustomMarkerPopup from "./CustomMarkerPopup";
 
 interface CustomMarkerProps {
     marker: MarkerType;
@@ -11,7 +12,9 @@ interface CustomMarkerProps {
 
 const CustomMarker: React.FC<CustomMarkerProps> = ({ marker }) => {
     return (
-        <Marker position={[marker.lat, marker.lng]} icon={defaultIcon}></Marker>
+        <Marker position={[marker.lat, marker.lng]} icon={defaultIcon}>
+            <CustomMarkerPopup marker={marker} />
+        </Marker>
     );
 };
 
