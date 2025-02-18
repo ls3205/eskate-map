@@ -115,6 +115,7 @@ const AddMarkerForm: React.FC<AddMarkerFormProps> = ({
                             <FormMessage />
                         </FormItem>
                     )}
+                    disabled={loading}
                 />
                 <FormField
                     control={form.control}
@@ -131,6 +132,7 @@ const AddMarkerForm: React.FC<AddMarkerFormProps> = ({
                             <FormMessage />
                         </FormItem>
                     )}
+                    disabled={loading}
                 />
                 <FormField
                     control={form.control}
@@ -171,6 +173,7 @@ const AddMarkerForm: React.FC<AddMarkerFormProps> = ({
                             <FormMessage />
                         </FormItem>
                     )}
+                    disabled={loading}
                 />
                 <FormField
                     control={form.control}
@@ -187,6 +190,7 @@ const AddMarkerForm: React.FC<AddMarkerFormProps> = ({
                             <FormMessage />
                         </FormItem>
                     )}
+                    disabled={loading}
                 />
                 <FormField
                     control={form.control}
@@ -203,6 +207,7 @@ const AddMarkerForm: React.FC<AddMarkerFormProps> = ({
                             <FormMessage />
                         </FormItem>
                     )}
+                    disabled={loading}
                 />
                 <Button
                     type="submit"
