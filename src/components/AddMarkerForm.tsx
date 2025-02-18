@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -25,6 +25,8 @@ import {
 import type { Session } from "next-auth";
 import { useMutation } from "@tanstack/react-query";
 import { AddMarker } from "@skatemap/app/actions";
+import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export const formSchema = z.object({
     lat: z.number(),
@@ -57,6 +59,9 @@ const AddMarkerForm: React.FC<AddMarkerFormProps> = ({
     session,
     //markerRef,
 }) => {
+    const router = useRouter();
+    const [loading, setLoading] = useState(false);
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -71,14 +76,17 @@ const AddMarkerForm: React.FC<AddMarkerFormProps> = ({
     const { mutate: createMarker } = useMutation({
         mutationKey: ["CreateMarker"],
         mutationFn: async (marker: z.infer<typeof formSchema>) => {
+            setLoading(true);
             const data = await AddMarker(marker, session.user.id);
             return data;
         },
         onError: (err) => {
             console.log(err);
+            setLoading(false);
         },
         onSuccess: (data) => {
-            //markerRef.closePopup();
+            router.back(); //TODO: fix issue where the marker isn't "loaded" yet on router.back()
+            setLoading(false);
         },
     });
 
@@ -90,7 +98,7 @@ const AddMarkerForm: React.FC<AddMarkerFormProps> = ({
         <Form {...form}>
             <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="max-w-52 space-y-8 p-2"
+                className="w-64 space-y-8 p-2 py-4"
             >
                 <FormField
                     control={form.control}
@@ -196,8 +204,16 @@ const AddMarkerForm: React.FC<AddMarkerFormProps> = ({
                         </FormItem>
                     )}
                 />
-                <Button type="submit" className="cursor-pointer">
-                    Submit Marker
+                <Button
+                    type="submit"
+                    className="cursor-pointer"
+                    disabled={loading}
+                >
+                    {loading ? (
+                        <Loader2 className="animate-spin" />
+                    ) : (
+                        "Add Marker"
+                    )}
                 </Button>
             </form>
         </Form>
