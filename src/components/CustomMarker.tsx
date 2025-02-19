@@ -10,10 +10,10 @@ interface CustomMarkerProps {
     session?: Session | null;
 }
 
-const CustomMarker: React.FC<CustomMarkerProps> = ({ marker }) => {
+const CustomMarker: React.FC<CustomMarkerProps> = ({ marker, session }) => {
     return (
         <Marker position={[marker.lat, marker.lng]} icon={defaultIcon}>
-            <CustomMarkerPopup marker={marker} />
+            <CustomMarkerPopup marker={marker} session={session} />
         </Marker>
     );
 };

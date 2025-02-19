@@ -4,6 +4,7 @@ import { db } from "@skatemap/server/db";
 import type { formSchema } from "@skatemap/components/AddMarkerForm";
 import type { z } from "zod";
 import { getServerAuthSession } from "@skatemap/server/auth";
+import type { Marker } from "@prisma/client";
 
 export const AddMarker = async (data: z.infer<typeof formSchema>) => {
     try {
@@ -49,4 +50,28 @@ export const GetDBMarkers = async (
     console.log(dbMarkers);
 
     return dbMarkers;
+};
+
+export const DeleteMarker = async (marker: Marker) => {
+    try {
+        const session = await getServerAuthSession();
+
+        if (session?.user) {
+            if (session.user.id == marker.creatorId) {
+                const deletedMarker = await db.marker.delete({
+                    where: {
+                        id: marker.id,
+                    },
+                });
+
+                return deletedMarker;
+            } else {
+                throw new Error("You cannot delete someone else's marker");
+            }
+        } else {
+            throw new Error("You need to be logged in to execute this");
+        }
+    } catch (err) {
+        throw new Error(`An error occurred: ${err}`);
+    }
 };

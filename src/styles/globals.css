@@ -167,6 +167,10 @@
     @apply bg-background! text-foreground! border-none!;
 }
 
+.leaflet-container a {
+    @apply text-foreground!;
+}
+
 /*
   ---break---
 */
@@ -277,4 +281,3 @@
         @apply bg-background text-foreground;
     }
 }
-

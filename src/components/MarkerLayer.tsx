@@ -90,7 +90,7 @@ const MarkerLayer: React.FC<MarkerLayerProps> = ({ session }) => {
     const [showTempMarker, setShowTempMarker] = useState<boolean>(false);
     const tempMarkerRef = useRef(null);
 
-    const [markerArray, setMarkerArray] = useState<MarkerType[]>([]);
+    const [markerArray, setMarkerArray] = useState<MarkerType[]>([]); //TODO: Make this a global w/ zustand
 
     const clearTemp = () => {
         setTempMarkerLatLong(null);

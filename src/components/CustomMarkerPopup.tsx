@@ -1,13 +1,67 @@
-import { Marker as MarkerType } from "@prisma/client";
+import type { Marker as MarkerType } from "@prisma/client";
+import { EllipsisVertical, Flag, Pencil, Trash2 } from "lucide-react";
 import React from "react";
 import { Popup } from "react-leaflet";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "./ui/DropdownMenu";
+import { Button, buttonVariants } from "./ui/Button";
+import type { Session } from "next-auth";
+import { DeleteMarker } from "@skatemap/app/actions";
 
 interface CustomMarkerPopupPros {
     marker: MarkerType;
+    session?: Session | null;
 }
 
-const CustomMarkerPopup: React.FC<CustomMarkerPopupPros> = ({ marker }) => {
-    return <Popup closeButton={false}>{"popup for marker " + marker.id}</Popup>;
+const CustomMarkerPopup: React.FC<CustomMarkerPopupPros> = ({
+    marker,
+    session,
+}) => {
+    return (
+        <Popup closeButton={false}>
+            <div className="relative min-h-24 min-w-44">
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button
+                            variant={"ghost"}
+                            className="absolute top-3 right-3 p-2"
+                        >
+                            <EllipsisVertical className="w-5" />
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        {marker.creatorId == session?.user.id ? (
+                            <>
+                                <DropdownMenuItem>
+                                    <Pencil />
+                                    <span>Edit</span>
+                                    {/* TODO: make edit modal/page  */}
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                    className={buttonVariants({
+                                        variant: "destructive",
+                                    })}
+                                    onClick={() => DeleteMarker(marker)} //TODO: Make this a mutation
+                                >
+                                    <Trash2 />
+                                    <span>Delete</span>
+                                </DropdownMenuItem>
+                            </>
+                        ) : (
+                            <DropdownMenuItem>
+                                <Flag />
+                                <span>Report</span>
+                            </DropdownMenuItem>
+                        )}
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </div>
+        </Popup>
+    );
 };
 
 export default CustomMarkerPopup;

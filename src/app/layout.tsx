@@ -3,7 +3,7 @@ import "@skatemap/styles/globals.css";
 
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
-import { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
 
 export const metadata: Metadata = {
     title: "Create T3 App",
