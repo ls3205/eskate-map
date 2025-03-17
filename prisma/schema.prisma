@@ -49,6 +49,8 @@ model User {
     sessions      Session[]
 
     markers Marker[]
+
+	comments Comment[]
 }
 
 model VerificationToken {
@@ -75,6 +77,28 @@ model Marker {
 
     created     DateTime @default(now())
     lastUpdated DateTime @updatedAt
+
+	comments Comment[]
+}
+
+model Comment {
+	id String @id @default(cuid())
+
+	creator 	User @relation(fields: [creatorId], references: [id])
+	creatorId 	String
+
+	marker Marker @relation(fields: [markerId], references: [id])
+	markerId String
+
+	content String @db.Text
+
+	created 	DateTime @default(now())
+	lastUpdated DateTime @updatedAt
+
+	replyingTo Comment? @relation("CommentReplies", fields: [replyingId], references: [id]) 
+	replyingId String?
+
+	replies Comment[] @relation("CommentReplies")
 }
 
 enum markerType {
