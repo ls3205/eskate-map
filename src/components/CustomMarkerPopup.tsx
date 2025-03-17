@@ -59,6 +59,16 @@ const CustomMarkerPopup: React.FC<CustomMarkerPopupPros> = ({
                         )}
                     </DropdownMenuContent>
                 </DropdownMenu>
+
+                <div className="m-3 mb-6 pr-8">
+                    <h2 className="text-xl">
+                        {marker.type.replaceAll("_", " ")}
+                    </h2>
+                    <h1 className="text-3xl">{marker.title}</h1>
+                    <p>Submitted by {marker.creatorId}</p>
+                </div>
+
+                <p className="p-4">{marker.description}</p>
             </div>
         </Popup>
     );
