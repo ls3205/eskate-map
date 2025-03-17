@@ -11,6 +11,7 @@ import {
 import { Button, buttonVariants } from "./ui/Button";
 import type { Session } from "next-auth";
 import { DeleteMarker } from "@skatemap/app/actions";
+import CommentSection from "./CommentSection";
 
 interface CustomMarkerPopupPros {
     marker: MarkerType;
@@ -70,7 +71,7 @@ const CustomMarkerPopup: React.FC<CustomMarkerPopupPros> = ({
 
             <p className="p-4">{marker.description}</p>
 
-            <div>comments</div>
+            <CommentSection />
         </Popup>
     );
 };
