@@ -6,9 +6,9 @@ interface pageProps {}
 
 const page: React.FC<pageProps> = ({}) => {
     return (
-        <main className="relative flex min-h-screen flex-col items-center justify-center">
+        <main className="relative flex min-h-dvh flex-col items-center justify-center">
             <LogInSelection />
-            <ThemeDropdown className="absolute bottom-5 right-5" />
+            <ThemeDropdown className="absolute right-5 bottom-5" />
         </main>
     );
 };
