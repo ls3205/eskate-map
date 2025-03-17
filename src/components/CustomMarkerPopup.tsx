@@ -22,54 +22,55 @@ const CustomMarkerPopup: React.FC<CustomMarkerPopupPros> = ({
     session,
 }) => {
     return (
-        <Popup closeButton={false}>
-            <div className="relative min-h-24 min-w-44">
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button
-                            variant={"ghost"}
-                            className="absolute top-3 right-3 p-2"
-                        >
-                            <EllipsisVertical className="w-5" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                        {marker.creatorId == session?.user.id ? (
-                            <>
-                                <DropdownMenuItem>
-                                    <Pencil />
-                                    <span>Edit</span>
-                                    {/* TODO: make edit modal/page  */}
-                                </DropdownMenuItem>
-                                <DropdownMenuItem
-                                    className={buttonVariants({
-                                        variant: "destructive",
-                                    })}
-                                    onClick={() => DeleteMarker(marker)} //TODO: Make this a mutation
-                                >
-                                    <Trash2 />
-                                    <span>Delete</span>
-                                </DropdownMenuItem>
-                            </>
-                        ) : (
+        <Popup
+            closeButton={false}
+            className="relative min-h-24 w-96 rounded-md bg-black md:w-sm lg:w-md"
+        >
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button
+                        variant={"ghost"}
+                        className="absolute top-3 right-3 p-2"
+                    >
+                        <EllipsisVertical className="w-5" />
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                    {marker.creatorId == session?.user.id ? (
+                        <>
                             <DropdownMenuItem>
-                                <Flag />
-                                <span>Report</span>
+                                <Pencil />
+                                <span>Edit</span>
+                                {/* TODO: make edit modal/page  */}
                             </DropdownMenuItem>
-                        )}
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                            <DropdownMenuItem
+                                className={buttonVariants({
+                                    variant: "destructive",
+                                })}
+                                onClick={() => DeleteMarker(marker)} //TODO: Make this a mutation
+                            >
+                                <Trash2 />
+                                <span>Delete</span>
+                            </DropdownMenuItem>
+                        </>
+                    ) : (
+                        <DropdownMenuItem>
+                            <Flag />
+                            <span>Report</span>
+                        </DropdownMenuItem>
+                    )}
+                </DropdownMenuContent>
+            </DropdownMenu>
 
-                <div className="m-3 mb-6 pr-8">
-                    <h2 className="text-xl">
-                        {marker.type.replaceAll("_", " ")}
-                    </h2>
-                    <h1 className="text-3xl">{marker.title}</h1>
-                    <p>Submitted by {marker.creatorId}</p>
-                </div>
-
-                <p className="p-4">{marker.description}</p>
+            <div className="m-3 mr-16 mb-6 w-full">
+                <h2 className="text-xl">{marker.type.replaceAll("_", " ")}</h2>
+                <h1 className="text-3xl">{marker.title}</h1>
+                <p>Submitted by {marker.creatorId}</p>
             </div>
+
+            <p className="p-4">{marker.description}</p>
+
+            <div>comments</div>
         </Popup>
     );
 };
